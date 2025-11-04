@@ -15,6 +15,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <!-- ¡¡ENLACE AÑADIDO PARA ESCRITORIO!! -->
+                    <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.index')">
+                        Administrar Cursos
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -69,6 +74,11 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            
+            <!-- ¡¡ENLACE AÑADIDO PARA MÓVIL!! -->
+            <x-responsive-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.index')">
+                Administrar Cursos
             </x-responsive-nav-link>
         </div>
 

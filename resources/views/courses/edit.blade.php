@@ -10,29 +10,41 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     
-                    <x-validation-errors class="mb-4" :errors="$errors" />
-                    
                     <form method="POST" action="{{ route('courses.update', $course) }}">
                         @csrf
-                        @method('PUT') <div>
-                            <x-label for="title" value="Título" />
-                            <x-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title', $course->title)" required autofocus />
+                        @method('PUT') <!-- No olvides esto para editar -->
+
+                        <!-- Título -->
+                        <div>
+                            <!-- CORREGIDO: Componente de etiqueta -->
+                            <x-input-label for="title" value="Título" />
+                            <!-- CORREGIDO: Componente de campo de texto -->
+                            <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title', $course->title)" required autofocus />
+                            <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
 
+                        <!-- Instructor -->
                         <div class="mt-4">
-                            <x-label for="instructor" value="Instructor" />
-                            <x-input id="instructor" class="block mt-1 w-full" type="text" name="instructor" :value="old('instructor', $course->instructor)" required />
+                            <!-- CORREGIDO: Componente de etiqueta -->
+                            <x-input-label for="instructor" value="Instructor" />
+                            <!-- CORREGIDO: Componente de campo de texto -->
+                            <x-text-input id="instructor" class="block mt-1 w-full" type="text" name="instructor" :value="old('instructor', $course->instructor)" required />
+                            <x-input-error :messages="$errors->get('instructor')" class="mt-2" />
                         </div>
 
+                        <!-- Descripción (Textarea es HTML estándar, solo se estila) -->
                         <div class="mt-4">
-                            <x-label for="description" value="Descripción" />
-                            <textarea id="description" name="description" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ old('description', $course->description) }}</textarea>
+                            <!-- CORREGIDO: Componente de etiqueta -->
+                            <x-input-label for="description" value="Descripción" />
+                            <textarea id="description" name="description" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" rows="5">{{ old('description', $course->description) }}</textarea>
+                            <x-input-error :messages="$errors->get('description')" class="mt-2" />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <x-button class="ml-4">
+                            <!-- CORREGIDO: Componente de botón (para el color) -->
+                            <x-primary-button class="ml-4">
                                 Actualizar Curso
-                            </x-button>
+                            </x-primary-button>
                         </div>
                     </form>
                 </div>
