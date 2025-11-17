@@ -3,6 +3,8 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+// AÑADIMOS EL NUEVO CONTROLADOR PÚBLICO
+use App\Http\Controllers\PublicCourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,20 +13,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 /**
- * ESTA ES LA RUTA QUE ARREGLA EL 404
- * La necesitamos para que Laravel sepa a dónde ir
- * después de un cierre de sesión.
+ * RUTAS PÚBLICAS (Módulo 3)
+ * Estas son las rutas que cualquiera puede ver, sin iniciar sesión.
  */
-Route::get('/', function () {
-    return view('welcome');
-});
+// CAMBIAMOS LA RUTA RAÍZ (/) para que use PublicCourseController [cite: 122-123]
+Route::get('/', [PublicCourseController::class, 'index'])->name('home');
 
-// Ruta del Dashboard (creada por Breeze)
+// AÑADIMOS la ruta para la vista de detalle (la usaremos en la Tarea 3) [cite: 125-126]
+Route::get('/curso/{course}', [PublicCourseController::class, 'show'])->name('courses.show');
+
+
+/*
+|--------------------------------------------------------------------------
+| Rutas Protegidas (Dashboard y Admin)
+|--------------------------------------------------------------------------
+*/
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Grupo de rutas protegidas
 Route::middleware('auth')->group(function () {
     // Rutas del Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,5 +42,5 @@ Route::middleware('auth')->group(function () {
     Route::resource('courses', CourseController::class)->except(['show']);
 });
 
-// Importar rutas de autenticación (/login, /register, /logout, etc.)
+// Importar rutas de autenticación (/login, /register, etc.)
 require __DIR__.'/auth.php';
