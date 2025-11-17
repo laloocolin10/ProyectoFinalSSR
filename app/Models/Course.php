@@ -1,18 +1,18 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Review; // 1. IMPORTANTE: Traer el modelo Review
+
+// ¡¡ESTA ES LA LÍNEA QUE ARREGLA EL ERROR!!
+use App\Models\Review; 
 
 class Course extends Model
 {
     use HasFactory;
-    /**
-     * 2. ASIGNACIÓN MASIVA (Fillable)
-     * Esto es CRÍTICO para que el método 'store' y 'update'
-     * del CourseController funcionen. Le da permiso a Laravel
-     * para rellenar estos campos usando Course::create().
-     */
+
+    // Esto le da permiso al CourseController para el CREADOR
     protected $fillable = [
         'title',
         'slug',
@@ -21,8 +21,8 @@ class Course extends Model
     ];
 
     /**
-     * 3. RELACIÓN CON RESEÑAS (Requisito Tarea 1)
-     * Define que un Curso "tiene muchas" reseñas.
+     * Relación: Un Curso tiene muchas Reseñas.
+     * (Esto es lo que causaba el error)
      */
     public function reviews()
     {
@@ -30,9 +30,8 @@ class Course extends Model
     }
 
     /**
-     * 4. USAR SLUG EN LA URL (Requisito Tarea 1 / PDF)
-     * Le dice a Laravel que cuando use Route Model Binding,
-     * debe buscar los cursos por el campo 'slug' en lugar del 'id'.
+     * Le dice a Laravel que use el 'slug' en lugar del 'id'
+     * en las rutas (Route Model Binding).
      */
     public function getRouteKeyName()
     {

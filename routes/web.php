@@ -3,44 +3,44 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-// AÑADIMOS EL NUEVO CONTROLADOR PÚBLICO
-use App\Http\Controllers\PublicCourseController;
+use App\Http\Controllers\PublicCourseController; // Importamos el controlador público
+use App\Http\Controllers\ReviewController;     // Importamos el controlador de reseñas
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
+|
+| Aquí es donde registramos todas las rutas.
+|
 */
 
-/**
- * RUTAS PÚBLICAS (Módulo 3)
- * Estas son las rutas que cualquiera puede ver, sin iniciar sesión.
- */
-// CAMBIAMOS LA RUTA RAÍZ (/) para que use PublicCourseController [cite: 122-123]
+// --- RUTAS PÚBLICAS (MÓDULO 3) ---
+// Esta es la ruta que te da 404. La estamos definiendo ahora:
 Route::get('/', [PublicCourseController::class, 'index'])->name('home');
 
-// AÑADIMOS la ruta para la vista de detalle (la usaremos en la Tarea 3) [cite: 125-126]
+// Esta es la ruta para ver un curso específico:
 Route::get('/curso/{course}', [PublicCourseController::class, 'show'])->name('courses.show');
 
 
-/*
-|--------------------------------------------------------------------------
-| Rutas Protegidas (Dashboard y Admin)
-|--------------------------------------------------------------------------
-*/
+// --- RUTAS PROTEGIDAS (PARA USUARIOS LOGUEADOS) ---
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    // Rutas del Perfil
+    // Rutas de Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Módulo 2: Rutas de Admin de Cursos
     Route::resource('courses', CourseController::class)->except(['show']);
+    
+    // Módulo 4: Ruta para guardar reseñas
+    Route::post('/curso/{course}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 });
 
-// Importar rutas de autenticación (/login, /register, etc.)
+// --- RUTAS DE AUTENTICACIÓN ---
+// Esto importa /login, /register, /logout, etc.
 require __DIR__.'/auth.php';
